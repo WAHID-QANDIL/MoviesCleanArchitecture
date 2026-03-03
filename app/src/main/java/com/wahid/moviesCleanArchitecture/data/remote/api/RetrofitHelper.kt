@@ -17,7 +17,8 @@ object RetrofitHelper {
                 .header("Authorization", "Bearer ${BuildConfig.BEARER_ACCESS_TOKEN}")
                 .build()
             chain.proceed(newRequest)
-        }.readTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
+        }
+        .readTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
         .writeTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
         .connectTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
         .build()
