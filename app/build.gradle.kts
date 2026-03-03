@@ -38,6 +38,7 @@ android {
             )
             buildConfigField("String", "BASE_URL", secrets.getProperty("BASE-URL", ""))
             buildConfigField("String", "IMAGE_URL", secrets.getProperty("IMAGE-URL",""))
+            buildConfigField("String", "BEARER_ACCESS_TOKEN", secrets.getProperty("BEARER-ACCESS-TOKEN",""))
             buildConfigField(
                 "String",
                 "API_KEY",
@@ -47,6 +48,7 @@ android {
         debug {
             buildConfigField("String", "BASE_URL", secrets.getProperty("BASE-URL", ""))
             buildConfigField("String", "IMAGE_URL", secrets.getProperty("IMAGE-URL",""))
+            buildConfigField("String", "BEARER_ACCESS_TOKEN", secrets.getProperty("BEARER-ACCESS-TOKEN",""))
             buildConfigField(
                 "String",
                 "API_KEY",
