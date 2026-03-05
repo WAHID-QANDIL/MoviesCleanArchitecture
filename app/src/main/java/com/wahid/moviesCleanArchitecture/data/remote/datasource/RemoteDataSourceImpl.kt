@@ -16,8 +16,9 @@ class RemoteDataSourceImpl(val movieService: MovieService) : RemoteDatasource {
                 filters, page
             )
         }.onSuccess { response ->
-            response.body()?.results?.forEach { it.toDataModel() }
-        }.onFailure { error->
+            val movies = response.body()?.results?.map { it.toDataModel() } ?: emptyList()
+            emit(movies)
+        }.onFailure { error ->
             throw error
         }
     }

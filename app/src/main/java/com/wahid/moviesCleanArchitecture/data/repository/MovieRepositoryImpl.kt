@@ -3,36 +3,31 @@ package com.wahid.moviesCleanArchitecture.data.repository
 import com.wahid.moviesCleanArchitecture.data.local.datasource.LocalMovieDatasource
 import com.wahid.moviesCleanArchitecture.data.mapper.movieToDataModel
 import com.wahid.moviesCleanArchitecture.data.mapper.movieToDomainModel
+import com.wahid.moviesCleanArchitecture.data.mapper.toDataModel
 import com.wahid.moviesCleanArchitecture.data.remote.datasource.RemoteDatasource
 import com.wahid.moviesCleanArchitecture.domain.model.Movie
 import com.wahid.moviesCleanArchitecture.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 
 class MovieRepositoryImpl(
     val remoteDatasource: RemoteDatasource,
     val localMovieDatasource: LocalMovieDatasource
 ) : MovieRepository {
-    override suspend fun getAllMovies(
+    override fun getAllMovies(
         filters: Map<String, String>,
         page: Int
-    ): Flow<List<Movie>> {
-        /*
-        * Here we can make logic for fetching from local datasource(DB) or from the API*/
-        val movies = remoteDatasource.getAllMovies(
+    ): Flow<List<Movie>> = flow {
+        remoteDatasource.getAllMovies(
             filters = filters,
             page = page
-        )
-        val entities = movies.toList().flatten()
-        localMovieDatasource.insertAllMovie(entities)
-
-
-        return localMovieDatasource.getAllMovies().map {
-            it.map { movie -> movie.movieToDomainModel() }
+        ).collect { remoteMovies ->
+            localMovieDatasource.insertAllMovie(remoteMovies)
         }
-
-
+        localMovieDatasource.getAllMovies().collect { localMovies ->
+            emit(localMovies.map { it.movieToDomainModel() })
+        }
     }
 
     override suspend fun deleteMovie(movie: Movie) {

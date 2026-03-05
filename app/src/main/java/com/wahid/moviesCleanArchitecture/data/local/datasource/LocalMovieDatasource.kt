@@ -9,7 +9,7 @@ interface LocalMovieDatasource {
     suspend fun insertMovie(movie: Movie)
     suspend fun insertAllMovie(movies: List<Movie>)
     suspend fun deleteMovie(movie: Movie)
-    suspend fun getAllMovies(): Flow<List<Movie>>
+    fun getAllMovies(): Flow<List<Movie>>
 
 
 }

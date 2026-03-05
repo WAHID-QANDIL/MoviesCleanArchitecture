@@ -1,6 +1,6 @@
 package com.wahid.moviesCleanArchitecture.data.remote.api
 
-import com.wahid.mvvm.BuildConfig
+import com.wahid.moviesmleanmrchitecture.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

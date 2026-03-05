@@ -1,11 +1,11 @@
-package com.wahid.mvvm.data.local.database.dao
+package com.wahid.moviesCleanArchitecture.data.local.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.wahid.moviesCleanArchitecture.data.local.database.entity.MovieEntity
 import com.wahid.moviesCleanArchitecture.data.model.Movie
-import com.wahid.mvvm.data.local.database.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -21,9 +21,9 @@ interface MovieDao {
     suspend fun delete(movie: MovieEntity)
 
     @Query("SELECT * FROM movies")
-    suspend fun getAllMovies(): Flow<List<MovieEntity>>
+    fun getAllMovies(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM movies WHERE id = :movieId")
-    suspend fun getMovieById(movieId: Int): Movie
+    fun getMovieById(movieId: Int): Flow<MovieEntity>
 
 }

@@ -4,7 +4,7 @@ import com.wahid.moviesCleanArchitecture.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-    suspend fun getAllMovies(
+    fun getAllMovies(
         filters: Map<String, String>,
         page: Int
     ): Flow<List<Movie>>

@@ -4,21 +4,28 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.wahid.mvvm.data.local.database.dao.MovieDao
-import com.wahid.mvvm.data.local.database.entity.MovieEntity
+import com.wahid.moviesCleanArchitecture.data.local.database.dao.MovieDao
+import com.wahid.moviesCleanArchitecture.data.local.database.entity.MovieEntity
 
 
-@Database(entities = [MovieEntity::class], version = 1)
+@Database(entities = [MovieEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getMovieDao(): MovieDao
     companion object{
-        private lateinit var INSTANCE: AppDatabase
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(application: Application): AppDatabase = INSTANCE ?: synchronized(this){
-            val instance = Room.databaseBuilder(application, AppDatabase::class.java,"movie_db").build()
-            INSTANCE = instance
-            INSTANCE
+        fun getInstance(application: Application): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    application,
+                    AppDatabase::class.java,
+                    "movie_db"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.wahid.moviesCleanArchitecture.domain.model
 
+import com.wahid.moviesmleanmrchitecture.BuildConfig
+
+
 data class Movie(
     val adult: Boolean,
     val backdrop_path: String,
-    val genre_ids: List<Int>,
+    val genre_ids: String?,
     val id: Int,
     val original_language: String,
     val original_title: String,
@@ -16,4 +19,6 @@ data class Movie(
     val vote_average: Double,
     val vote_count: Int
 
-)
+){
+    fun getFullPosterPath() = BuildConfig.IMAGE_URL + poster_path
+}

@@ -1,23 +1,25 @@
 package com.wahid.moviesCleanArchitecture.data.mapper
 
+import com.google.gson.Gson
 import com.wahid.moviesCleanArchitecture.data.model.Movie
 import com.wahid.moviesCleanArchitecture.data.remote.dto.MovieRemoteModel
-import com.wahid.mvvm.data.local.database.entity.MovieEntity
+import com.wahid.moviesCleanArchitecture.data.local.database.entity.MovieEntity
 
+private val gson = Gson()
 
 fun Movie.movieToEntity() = MovieEntity(
     id = id,
-    title = title,
-    poster_path = poster_path,
+    title = title?:"",
+    poster_path = poster_path?:"",
     backdrop_path = backdrop_path,
-    original_language = original_language,
-    original_title = original_title,
-    overview = overview,
+    original_language = original_language?:"",
+    original_title = original_title?:"",
+    overview = overview?:"",
     adult = adult,
     video = video,
-    popularity = popularity,
-    genre_ids = genre_ids,
-    release_date = release_date,
+    popularity = popularity?:0.0,
+    genre_ids = gson.toJson(genre_ids),
+    release_date = release_date?:"",
     vote_average = vote_average,
     vote_count = vote_count,
 )
@@ -35,7 +37,7 @@ fun com.wahid.moviesCleanArchitecture.domain.model.Movie.movieToDataModel() = Mo
     adult = adult,
     video = video,
     popularity = popularity,
-    genre_ids = genre_ids,
+    genre_ids = gson.toJson(genre_ids) as List<Int>?,
     release_date = release_date,
     vote_average = vote_average,
     vote_count = vote_count,
@@ -43,17 +45,17 @@ fun com.wahid.moviesCleanArchitecture.domain.model.Movie.movieToDataModel() = Mo
 
 fun Movie.movieToDomainModel() = com.wahid.moviesCleanArchitecture.domain.model.Movie(
     id = id,
-    title = title,
-    poster_path = poster_path,
+    title = title?:"",
+    poster_path = poster_path?:"",
     backdrop_path = backdrop_path,
-    original_language = original_language,
-    original_title = original_title,
-    overview = overview,
+    original_language = original_language?:"",
+    original_title = original_title?:"",
+    overview = overview?:"",
     adult = adult,
     video = video,
-    popularity = popularity,
-    genre_ids = genre_ids,
-    release_date = release_date,
+    popularity = popularity?:0.0,
+    genre_ids = gson.toJson(genre_ids),
+    release_date = release_date?:"",
     vote_average = vote_average,
     vote_count = vote_count,
 )
@@ -70,7 +72,11 @@ fun MovieEntity.toDataModel() = Movie(
     adult = adult,
     video = video,
     popularity = popularity,
-    genre_ids = genre_ids,
+    genre_ids = try {
+        gson.fromJson(genre_ids, Array<Int>::class.java).toList()
+    } catch (e: Exception) {
+        emptyList()
+    },
     release_date = release_date,
     vote_average = vote_average,
     vote_count = vote_count,
